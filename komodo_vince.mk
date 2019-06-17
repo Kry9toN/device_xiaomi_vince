@@ -21,14 +21,14 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
 # Inherit from vince device
 $(call inherit-product, device/xiaomi/vince/device.mk)
 
-# Inherit some common BeastROMs stuff.
-$(call inherit-product, vendor/beast/config/common.mk)
+# Inherit some common KomodOS Rom stuff.
+$(call inherit-product, vendor/komodo/config/common.mk)
 
 TARGET_BOOT_ANIMATION_RES := 2160
 
 # Device identifier
 PRODUCT_DEVICE := vince
-PRODUCT_NAME := beast_vince
+PRODUCT_NAME := komodo_vince
 PRODUCT_BRAND := Xiaomi
 PRODUCT_MODEL := Redmi 5 Plus
 PRODUCT_MANUFACTURER := Xiaomi

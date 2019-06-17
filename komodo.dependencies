@@ -1,0 +1,15 @@
+[
+  {
+    "remote": "github",
+    "repository": "KomodOSRom-Devices/vendor_xiaomi",
+    "target_path": "vendor/xiaomi",
+    "branch": "pie"
+  },
+  {
+    "remote": "github",
+    "repository": "KomodOSRom-Devices/device_xiaomi_msm8953-common",
+    "target_path": "device/xiaomi/msm8953-common",
+    "branch": "pie"
+  }
+]
+
