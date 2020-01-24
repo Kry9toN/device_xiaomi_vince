@@ -18,5 +18,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.secure=0 \
     ro.debuggable=1
 
-# maintainer
-ro.havoc.maintainer=Blacksuan19
+# Maintainer
+PRODUCT_PROPERTY_OVERRIDES += \
+    org.komodo.maintainer=Kry9toN
