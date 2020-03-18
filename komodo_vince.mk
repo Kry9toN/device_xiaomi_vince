@@ -25,6 +25,9 @@ $(call inherit-product, device/xiaomi/vince/device.mk)
 $(call inherit-product, vendor/komodo/config/common_full_phone.mk)
 CURRENT_BUILD_TYPE := nogapps
 
+# Official tag
+KOMODO_OFFICIAL := true
+
 # Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := vince
 PRODUCT_NAME := komodo_vince
