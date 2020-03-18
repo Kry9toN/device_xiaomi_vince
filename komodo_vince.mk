@@ -28,7 +28,7 @@ $(call inherit-product, vendor/komodo/config/common_full_phone.mk)
 CURRENT_BUILD_TYPE := nogapps
 
 # Official tag
-KOMODO_BUILD_TYPE := OFFICIAL
+KOMODO_OFFICIAL := true
 
 # Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := vince
