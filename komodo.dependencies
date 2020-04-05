@@ -9,12 +9,6 @@
     "remote": "github",
     "repository": "Kry9toN/vendor_xiaomi_vince",
     "target_path": "vendor/xiaomi",
-    "branch": "ten"
-  },
-  {
-    "remote": "github",
-    "repository": "Kry9toN/device_xiaomi_msm8953-common",
-    "target_path": "device/xiaomi/msm8953-common",
-    "branch": "ten"
+    "branch": "10.0"
   }
 ]
