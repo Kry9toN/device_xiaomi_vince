@@ -1,7 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2016 The CyanogenMod Project
-# Copyright (C) 2017 The LineageOS Project
+# Copyright (C) 2020 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +16,9 @@
 #
 
 set -e
+
+DEVICE=vince
+VENDOR=xiaomi
 
 # Load extract_utils and do some sanity checks
 MY_DIR="${BASH_SOURCE%/*}"
@@ -34,16 +36,21 @@ fi
 # Default to sanitizing the vendor folder before extraction
 CLEAN_VENDOR=true
 
-while [ "$1" != "" ]; do
-    case $1 in
-        -n | --no-cleanup )     CLEAN_VENDOR=false
-                                ;;
-        -s | --section )        shift
-                                SECTION=$1
-                                CLEAN_VENDOR=false
-                                ;;
-        * )                     SRC=$1
-                                ;;
+while [ "${#}" -gt 0 ]; do
+    case "${1}" in
+        -n | --no-cleanup )
+            CLEAN_VENDOR=false
+            ;;
+        -k | --kang )
+                KANG="--kang"
+                ;;
+        -s | --section )
+                SECTION="${2}"; shift
+                CLEAN_VENDOR=false
+                ;;
+        * )
+                SRC="${1}"
+                ;;
     esac
     shift
 done
@@ -52,54 +59,10 @@ if [ -z "$SRC" ]; then
     SRC=adb
 fi
 
-# Initialize the helper
-setup_vendor "$DEVICE_COMMON" "$VENDOR" "$LINEAGE_ROOT" true "$CLEAN_VENDOR"
+# Initialize the common helper
+setup_vendor "$DEVICE" "$VENDOR" "$LINEAGE_ROOT" false $CLEAN_VENDOR
 
-extract "$MY_DIR"/proprietary-files-qc.txt "$SRC" "$SECTION"
-
-if [ -s "$MY_DIR"/../$DEVICE/proprietary-files.txt ]; then
-    # Reinitialize the helper for device
-    setup_vendor "$DEVICE" "$VENDOR" "$LINEAGE_ROOT" false "$CLEAN_VENDOR"
-
-    extract "$MY_DIR"/../$DEVICE/proprietary-files.txt "$SRC" "$SECTION"
-fi
-
-DEVICE_BLOB_ROOT="$LINEAGE_ROOT"/vendor/"$VENDOR"/"$DEVICE"/proprietary
-
-if [ "$DEVICE" = "tissot" ]; then
-patchelf --remove-needed libbacktrace.so "$DEVICE_BLOB_ROOT"/lib64/hw/gf_fingerprint.default.so
-patchelf --remove-needed libunwind.so "$DEVICE_BLOB_ROOT"/lib64/hw/gf_fingerprint.default.so
-patchelf --remove-needed libkeystore_binder.so "$DEVICE_BLOB_ROOT"/lib64/hw/gf_fingerprint.default.so
-patchelf --remove-needed libsoftkeymasterdevice.so "$DEVICE_BLOB_ROOT"/lib64/hw/gf_fingerprint.default.so
-patchelf --remove-needed libsoftkeymaster.so "$DEVICE_BLOB_ROOT"/lib64/hw/gf_fingerprint.default.so
-patchelf --remove-needed libkeymaster_messages.so "$DEVICE_BLOB_ROOT"/lib64/hw/gf_fingerprint.default.so
-
-patchelf --remove-needed libbacktrace.so "$DEVICE_BLOB_ROOT"/lib64/libgoodixfingerprintd_binder.so
-patchelf --remove-needed libunwind.so "$DEVICE_BLOB_ROOT"/lib64/libgoodixfingerprintd_binder.so
-patchelf --remove-needed libkeystore_binder.so "$DEVICE_BLOB_ROOT"/lib64/libgoodixfingerprintd_binder.so
-patchelf --remove-needed libsoftkeymasterdevice.so "$DEVICE_BLOB_ROOT"/lib64/libgoodixfingerprintd_binder.so
-patchelf --remove-needed libsoftkeymaster.so "$DEVICE_BLOB_ROOT"/lib64/libgoodixfingerprintd_binder.so
-
-patchelf --remove-needed libbacktrace.so "$DEVICE_BLOB_ROOT"/vendor/lib64/libvendor.goodix.hardware.fingerprint@1.0-service.so
-patchelf --remove-needed libunwind.so "$DEVICE_BLOB_ROOT"/vendor/lib64/libvendor.goodix.hardware.fingerprint@1.0-service.so
-patchelf --remove-needed libkeystore_binder.so "$DEVICE_BLOB_ROOT"/vendor/lib64/libvendor.goodix.hardware.fingerprint@1.0-service.so
-patchelf --remove-needed libsoftkeymasterdevice.so "$DEVICE_BLOB_ROOT"/vendor/lib64/libvendor.goodix.hardware.fingerprint@1.0-service.so
-patchelf --remove-needed libsoftkeymaster.so "$DEVICE_BLOB_ROOT"/vendor/lib64/libvendor.goodix.hardware.fingerprint@1.0-service.so
-patchelf --remove-needed libkeymaster_messages.so "$DEVICE_BLOB_ROOT"/vendor/lib64/libvendor.goodix.hardware.fingerprint@1.0-service.so
-
-patchelf --remove-needed libbacktrace.so "$DEVICE_BLOB_ROOT"/vendor/lib64/libvendor.goodix.hardware.fingerprint@1.0.so
-patchelf --remove-needed libunwind.so "$DEVICE_BLOB_ROOT"/vendor/lib64/libvendor.goodix.hardware.fingerprint@1.0.so
-patchelf --remove-needed libkeystore_binder.so "$DEVICE_BLOB_ROOT"/vendor/lib64/libvendor.goodix.hardware.fingerprint@1.0.so
-patchelf --remove-needed libsoftkeymasterdevice.so "$DEVICE_BLOB_ROOT"/vendor/lib64/libvendor.goodix.hardware.fingerprint@1.0.so
-patchelf --remove-needed libsoftkeymaster.so "$DEVICE_BLOB_ROOT"/vendor/lib64/libvendor.goodix.hardware.fingerprint@1.0.so
-patchelf --remove-needed libkeymaster_messages.so "$DEVICE_BLOB_ROOT"/vendor/lib64/libvendor.goodix.hardware.fingerprint@1.0.so
-
-fi
-
-if [ "$DEVICE" = "mido" ]; then
-    # Hax for cam configs
-    CAMERA2_SENSOR_MODULES="$LINEAGE_ROOT"/vendor/"$VENDOR"/"$DEVICE"/proprietary/vendor/lib/libmmcamera2_sensor_modules.so
-    sed -i "s|/system/etc/camera/|/vendor/etc/camera/|g" "$CAMERA2_SENSOR_MODULES"
-fi
+extract "$MY_DIR"/proprietary-files.txt "$SRC" \
+    "${KANG}" --section "${SECTION}"
 
 "$MY_DIR"/setup-makefiles.sh

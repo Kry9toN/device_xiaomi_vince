@@ -1,7 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2016 The CyanogenMod Project
-# Copyright (C) 2017 The LineageOS Project
+# Copyright (C) 2020 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +17,10 @@
 
 set -e
 
-INITIAL_COPYRIGHT_YEAR=2017
+DEVICE=vince
+VENDOR=xiaomi
+
+INITIAL_COPYRIGHT_YEAR=2020
 
 # Load extract_utils and do some sanity checks
 MY_DIR="${BASH_SOURCE%/*}"
@@ -33,29 +35,13 @@ if [ ! -f "$HELPER" ]; then
 fi
 . "$HELPER"
 
-# Initialize the helper
-setup_vendor "$DEVICE_COMMON" "$VENDOR" "$LINEAGE_ROOT" true
+# Initialize the common helper
+setup_vendor "$DEVICE" "$VENDOR" "$LINEAGE_ROOT" false
 
 # Copyright headers and guards
-write_headers "mido tissot vince"
+write_headers
 
-# The standard common blobs
-write_makefiles "$MY_DIR"/proprietary-files-qc.txt true
+write_makefiles "$MY_DIR"/proprietary-files.txt true
 
-# We are done!
+# Finish
 write_footers
-
-if [ -s "$MY_DIR"/../$DEVICE/proprietary-files.txt ]; then
-    # Reinitialize the helper for device
-    INITIAL_COPYRIGHT_YEAR="$DEVICE_BRINGUP_YEAR"
-    setup_vendor "$DEVICE" "$VENDOR" "$LINEAGE_ROOT" false
-
-    # Copyright headers and guards
-    write_headers
-
-    # The standard device blobs
-    write_makefiles "$MY_DIR"/../$DEVICE/proprietary-files.txt true
-
-    # We are done!
-    write_footers
-fi
