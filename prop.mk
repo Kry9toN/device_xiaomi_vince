@@ -36,7 +36,11 @@ vendor.voice.conc.fallbackpath=deep-buffer \
 vendor.voice.path.for.pcm.voip=true \
 vendor.voice.playback.conc.disabled=true \
 vendor.voice.record.conc.disabled=false \
-vendor.voice.voip.conc.disabled=true
+vendor.voice.voip.conc.disabled=true \
+persist.vendor.audio.fluence.speaker=true \
+persist.vendor.audio.fluence.voicecall=true \
+persist.vendor.audio.fluence.voicerec=false \
+ro.vendor.audio.sdk.fluencetype=fluence
 
 # Bluetooth
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -74,7 +78,10 @@ persist.camera.stats.test=5 \
 persist.vendor.qti.telephony.vt_cam_interface=1 \
 vidc.enc.dcvs.extra-buff-count=2 \
 persist.camera.HAL3.enabled=1 \
-debug.sf.enable_gl_backpressure=1
+debug.sf.enable_gl_backpressure=1 \
+vendor.camera.aux.packagelist=org.codeaurora.snapcam,com.android.camera,org.lineageos.snap \
+persist.camera.dual.camera=0 \
+persist.camera.CDS=off
 
 # Cne/Dpm
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -164,6 +171,10 @@ vendor.display.enable_default_color_mode=1 \
 vendor.gralloc.enable_fb_ubwc=1 \
 vendor.video.disable.ubwc=1
 
+# Maintainer
+PRODUCT_PROPERTY_OVERRIDES += \
+org.komodo.maintainer=Kry9toN
+
 # Perf
 PRODUCT_PROPERTY_OVERRIDES += \
 ro.sys.fw.dex2oat_thread_count=8 \
@@ -244,6 +255,13 @@ sys.use_fifo_ui=1
 PRODUCT_PROPERTY_OVERRIDES += \
 persist.vendor.usb.config.extra=none
 
+# USB debugging
+PRODUCT_PROPERTY_OVERRIDES += \
+persist.sys.usb.config=mtp,adb \
+ro.adb.secure=0 \
+ro.secure=0 \
+ro.debuggable=1
+
 # Wifi
 PRODUCT_PROPERTY_OVERRIDES += \
 wifi.interface=wlan0
@@ -288,10 +306,10 @@ TapSlop=1px
 
 # Lau's magic props
 PRODUCT_PROPERTY_OVERRIDES += \
-debug.sf.hw=1 \ 
+debug.sf.hw=1 \
 debug.hwui.renderer=skiagl \
 debug.cpurend.vsync=false \
-vendor.display.enable_default_color_mode=0 \ 
+vendor.display.enable_default_color_mode=0 \
 debug.composition.type=c2d  \
 debug.mdpcomp.idletime=600  \
 persist.hwc.ptor.enable=true \

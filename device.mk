@@ -14,6 +14,14 @@
 # limitations under the License.
 #
 
+$(call inherit-product, vendor/xiaomi/vince/vince-vendor.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_n_mr1.mk)
+
+# Audio configuration
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/audio/audio_platform_info.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_platform_info.xml \
+    $(LOCAL_PATH)/audio/mixer_paths_mtp.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mixer_paths_mtp.xml
+
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
@@ -118,11 +126,18 @@ PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-service \
     camera.msm8953 \
     libmm-qcamera \
+	camera.msm8953 \
+    libmm-qcamera \
     Snap
 
 # Configstore
 PRODUCT_PACKAGES += \
     android.hardware.configstore@1.0-service
+
+# ConsumerIr
+PRODUCT_PACKAGES += \
+    android.hardware.ir@1.0-impl \
+    android.hardware.ir@1.0-service
 
 # Display
 PRODUCT_PACKAGES += \
@@ -277,7 +292,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml
 
 # Properties
--include device/xiaomi/msm8953-common/prop.mk
+-include device/xiaomi/vince/prop.mk
 
 # QMI
 PRODUCT_PACKAGES += \
@@ -299,6 +314,12 @@ PRODUCT_PACKAGES += \
     init.qcom.post_boot.sh \
     move_time_data.sh \
     move_wifi_data.sh
+
+PRODUCT_PACKAGES += \
+    init.goodix.sh \
+    init.recovery.qcom.rc \
+    init.recovery.qcom.usb.rc \
+    init.vince.rc
 
 # RenderScript HAL
 PRODUCT_PACKAGES += \
@@ -337,10 +358,11 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/sensors/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf \
+    $(LOCAL_PATH)/configs/sensors/sensor_def_qcomdev.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/sensor_def_qcomdev.conf
 
 # Soong
 PRODUCT_SOONG_NAMESPACES += \
-    device/xiaomi/msm8953-common
+    device/xiaomi/vince
 
 # TextClassifier smart selection model files
 PRODUCT_PACKAGES += \
