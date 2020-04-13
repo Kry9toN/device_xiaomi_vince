@@ -17,36 +17,31 @@
 
 set -e
 
-# Required!
-export DEVICE=vince
-export VENDOR=xiaomi
+DEVICE=vince
+VENDOR=xiaomi
 
-export DEVICE_BRINGUP_YEAR=2020
+INITIAL_COPYRIGHT_YEAR=2020
 
 # Load extract_utils and do some sanity checks
 MY_DIR="${BASH_SOURCE%/*}"
-if [[ ! -d "${MY_DIR}" ]]; then MY_DIR="${PWD}"; fi
+if [[ ! -d "$MY_DIR" ]]; then MY_DIR="$PWD"; fi
 
-ROM_ROOT="${MY_DIR}"/../../..
+KOMODO_ROOT="$MY_DIR"/../../..
 
-HELPER="${ROM_ROOT}"/vendor/aosp/build/tools/extract_utils.sh"
-if [ ! -f "${HELPER}" ]; then
-    echo "Unable to find helper script at ${HELPER}"
+HELPER="$KOMODO_ROOT"/vendor/komodo/build/tools/extract_utils.sh
+if [ ! -f "$HELPER" ]; then
+    echo "Unable to find helper script at $HELPER"
     exit 1
 fi
-source "${HELPER}"
+. "$HELPER"
 
-# Initialize the helper
-setup_vendor "$DEVICE" "$VENDOR" "${ROM_ROOT}"
+# Initialize the common helper
+setup_vendor "$DEVICE" "$VENDOR" "$KOMODO_ROOT" false
 
 # Copyright headers and guards
 write_headers
 
-write_makefiles "${MY_DIR}"/proprietary-files.txt" true
-
-cat << EOF >> "$ANDROIDMK"
-
-EOF
+write_makefiles "$MY_DIR"/proprietary-files.txt true
 
 # Finish
 write_footers

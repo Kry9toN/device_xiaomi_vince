@@ -17,22 +17,21 @@
 
 set -e
 
-# Required!
-export DEVICE=vince
-export VENDOR=xiaomi
+DEVICE=vince
+VENDOR=xiaomi
 
 # Load extract_utils and do some sanity checks
 MY_DIR="${BASH_SOURCE%/*}"
-if [[ ! -d "{$MY_DIR}" ]]; then MY_DIR="${PWD}"; fi
+if [[ ! -d "$MY_DIR" ]]; then MY_DIR="$PWD"; fi
 
-ROM_ROOT="${MY_DIR}"/../../..
+KOMODO_ROOT="$MY_DIR"/../../..
 
-HELPER="${ROM_ROOT}"/vendor/aosp/build/tools/extract_utils.sh"
-if [ ! -f "${HELPER}" ]; then
-    echo "Unable to find helper script at ${HELPER}"
+HELPER="$KOMODO_ROOT"/vendor/komodo/build/tools/extract_utils.sh
+if [ ! -f "$HELPER" ]; then
+    echo "Unable to find helper script at $HELPER"
     exit 1
 fi
-source "${HELPER}"
+. "$HELPER"
 
 # Default to sanitizing the vendor folder before extraction
 CLEAN_VENDOR=true
@@ -40,8 +39,8 @@ CLEAN_VENDOR=true
 while [ "${#}" -gt 0 ]; do
     case "${1}" in
         -n | --no-cleanup )
-                CLEAN_VENDOR=false
-                ;;
+            CLEAN_VENDOR=false
+            ;;
         -k | --kang )
                 KANG="--kang"
                 ;;
@@ -56,21 +55,16 @@ while [ "${#}" -gt 0 ]; do
     shift
 done
 
-if [ -z "${SRC}" ]; then
-    SRC="adb"
+if [ -z "$SRC" ]; then
+    SRC=adb
 fi
 
-# Initialize the helper
-BLOB_ROOT="$ROM_ROOT"/vendor/"$VENDOR"/"$DEVICE"/proprietary
+# Initialize the common helper
+setup_vendor "$DEVICE" "$VENDOR" "$KOMODO_ROOT" false $CLEAN_VENDOR
 
-patchelf --remove-needed vendor.xiaomi.hardware.mtdservice@1.0.so "$BLOB_ROOT"/vendor/bin/mlipayd@1.1
-patchelf --remove-needed vendor.xiaomi.hardware.mtdservice@1.0.so "$BLOB_ROOT"/vendor/lib64/libmlipay.so
-patchelf --remove-needed vendor.xiaomi.hardware.mtdservice@1.0.so "$BLOB_ROOT"/vendor/lib64/libmlipay@1.1.so
+extract "$MY_DIR"/proprietary-files.txt "$SRC" \
+    "${KANG}" --section "${SECTION}"
 
-# Initialize the helper
-setup_vendor "${DEVICE}" "${VENDOR}" "${ROM_ROOT}" false "${CLEAN_VENDOR}"
+DEVICE_BLOB_ROOT="$KOMODO_ROOT"/vendor/"$VENDOR"/"$DEVICE"/proprietary
 
-extract "${MY_DIR}/proprietary-files.txt" "${SRC}" \
-        "${KANG}" --section "${SECTION}"
-
-"${MY_DIR}/setup-makefiles.sh"
+"$MY_DIR"/setup-makefiles.sh
