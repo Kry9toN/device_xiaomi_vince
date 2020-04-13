@@ -1,0 +1,4 @@
+allow untrusted_app sysfs_kgsl:dir { search };
+allow untrusted_app sysfs_kgsl:lnk_file { read };
+allow untrusted_app persist_camera_prop:file { open };
+allow untrusted_app persist_camera_prop:file { getattr };
