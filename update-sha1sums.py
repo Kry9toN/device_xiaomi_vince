@@ -61,7 +61,7 @@ def update():
       if filePath[0] == '-':
         file = open('%s/%s' % (vendorPath, filePath[1:]), 'rb').read()
       else:
-        file = open('%s/%s' % (vendorPath, filePath), 'rb').read()
+        file = open('%s/%s' % (vendorPath, filePath.strip(' ')), 'rb').read()
 
       hash = sha1(file).hexdigest()
       lines[index] = '%s|%s\n' % (line, hash)
