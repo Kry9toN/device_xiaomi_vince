@@ -461,7 +461,7 @@
     <integer name="config_num_physical_slots">2</integer>
  
     <!-- Smart charging -->
-    <bool name="config_smartChargingAvailable">false</bool>
+    <bool name="config_smartChargingAvailable">true</bool>
 
     <!-- Whether to use in-built Screen Record service -->
     <bool name="config_showScreenRecord">true</bool>
