@@ -7,8 +7,7 @@
   },
   {
     "remote": "github",
-    "repository": "Kry9toN/vendor_xiaomi_vince",
-    "target_path": "vendor/xiaomi/vince",
-    "branch": "ten"
+    "repository": "Komodo-OS-Devices/vendor_xiaomi",
+    "target_path": "vendor/xiaomi"
   }
 ]
