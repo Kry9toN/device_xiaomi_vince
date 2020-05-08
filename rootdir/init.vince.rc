@@ -49,6 +49,10 @@ on boot
     chown system system /sys/devices/platform/soc/78b7000.i2c/i2c-3/3-0020/input/input2/wake_gesture
     write /sys/devices/platform/soc/78b7000.i2c/i2c-3/3-0020/input/input2/wake_gesture 1
 
+    # Yellow LED
+    write /sys/class/leds/led:flash_1/max_brightness 0
+    write /sys/class/leds/led:torch_1/max_brightness 0
+    write /sys/class/leds/torch-light1/max_brightness 0
 
 on property:sys.fp.vendor=goodix
    setprop ro.boot.fpsensor goodix
