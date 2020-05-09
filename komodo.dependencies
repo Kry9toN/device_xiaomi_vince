@@ -1,7 +1,7 @@
 [
   {
     "remote": "github",
-    "repository": "Kry9toN/android_kernel_xiaomi_msm8953-4.9",
+    "repository": "Kry9toN/kernel_xiaomi_vince-4.9",
     "target_path": "kernel/xiaomi/vince",
     "branch": "BLC"
   },
