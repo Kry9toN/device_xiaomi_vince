@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-
 DEVICE_PATH := device/xiaomi/vince
 
 # Architecture
@@ -49,10 +47,11 @@ BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 BOARD_KERNEL_PAGESIZE :=  2048
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
-ifneq ($(TARGET_KERNEL_SOURCE),)
-    TARGET_KERNEL_SOURCE := kernel/xiaomi/msm8953
-endif
 TARGET_KERNEL_VERSION := 4.9
+TARGET_KERNEL_CONFIG := vince-krypton_defconfig
+TARGET_KERNEL_CLANG_COMPILE := true
+TARGET_KERNEL_CLANG_VERSION := nad
+TARGET_KERNEL_SOURCE := kernel/xiaomi/vince
 
 # ANT
 BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
@@ -238,10 +237,6 @@ TARGET_COPY_OUT_VENDOR := vendor
 TARGET_QCOM_AUDIO_VARIANT := caf-msm8996
 TARGET_QCOM_MEDIA_VARIANT := caf-msm8996
 TARGET_QCOM_DISPLAY_VARIANT := caf-msm8996
-
-# Kernel
-TARGET_KERNEL_CONFIG := vince-krypton_defconfig
-TARGET_KERNEL_SOURCE := kernel/xiaomi/vince
 
 # Partitions
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 25765043200 # 25765059584 - 16384
